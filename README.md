@@ -1,19 +1,20 @@
-# JSON Restful JSON API
+# Dynamo Document Server in Go
 
-This code repository hosts the examples used in the following [The New Stack](http://thenewstack.io/make-a-restful-json-api-go/) article.
+## Dependencies 
 
+    go get "github.com/gorilla/mux"
 
-## Running Examples
+## Build
 
-To run exmaples, from the root of this project (change the version as needed):
+    go build
 
-```sh
-# Run example 1
-go run ./v1/*.go
-```
+## Run
 
-```sh
-# Run example 2
-go run ./v2/*.go
-```
+    ./dynago-docs
 
+## Credits
+This was forked from [tns-restful-json-api][source], which goes along
+with [this tutorial][tutorial].
+
+[source]: https://github.com/corylanou/tns-restful-json-api
+[tutorial]: https://thenewstack.io/make-a-restful-json-api-go/
