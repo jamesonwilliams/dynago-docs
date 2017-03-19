@@ -23,7 +23,11 @@ func Index(w http.ResponseWriter, r *http.Request) {
 func DocumentIndex(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
-	documents := database.RetrieveDocuments()
+	documents, err := database.RetrieveDocuments()
+	if err != nil {
+		panic(err)
+	}
+
 	if err := getEncoder(w).Encode(documents); err != nil {
 		panic(err)
 	}
@@ -36,7 +40,10 @@ func DocumentShow(w http.ResponseWriter, r *http.Request) {
 	if documentId, err = strconv.Atoi(vars["documentId"]); err != nil {
 		panic(err)
 	}
-	document := database.RetrieveDocument(documentId)
+	document, err := database.RetrieveDocument(documentId)
+	if err != nil {
+		panic(err)
+	}
 	if document.Id > 0 {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusOK)
@@ -81,10 +88,13 @@ func DocumentCreate(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	t := database.StoreDocument(document)
+	doc, err := database.StoreDocument(document)
+	if err != nil {
+		panic(err)
+	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusCreated)
-	if err := getEncoder(w).Encode(t); err != nil {
+	if err := getEncoder(w).Encode(doc); err != nil {
 		panic(err)
 	}
 }

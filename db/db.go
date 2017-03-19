@@ -5,8 +5,8 @@ import (
 )
 
 type Database interface {
-	RetrieveDocument(id int) model.Document
-	RetrieveDocuments() []model.Document
-	StoreDocument(d model.Document) model.Document
+	RetrieveDocument(id int) (model.Document, error)
+	RetrieveDocuments() ([]model.Document, error)
+	StoreDocument(d model.Document) (model.Document, error)
 	DeleteDocument(id int) error
 }
