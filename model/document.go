@@ -1,4 +1,4 @@
-package main
+package model
 
 import "time"
 
@@ -8,5 +8,3 @@ type Document struct {
 	Completed bool      `json:"completed"`
 	Due       time.Time `json:"due"`
 }
-
-type Documents []Document
