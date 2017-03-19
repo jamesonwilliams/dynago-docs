@@ -6,15 +6,18 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/satori/go.uuid"
 
 	"github.com/jamesonwilliams/dynago-docs/db"
 	"github.com/jamesonwilliams/dynago-docs/model"
 )
 
-var database = db.InMemDatabase{}
+var database = db.DynamoDatabase{
+	Region:    "us-west-2",
+	TableName: "Documents",
+}
 
 func Index(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Welcome!\n")
@@ -35,32 +38,22 @@ func DocumentIndex(w http.ResponseWriter, r *http.Request) {
 
 func DocumentShow(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	var documentId int
-	var err error
-	if documentId, err = strconv.Atoi(vars["documentId"]); err != nil {
-		panic(err)
-	}
-	document, err := database.RetrieveDocument(documentId)
+	document, err := database.RetrieveDocument(vars["documentId"])
 	if err != nil {
-		panic(err)
-	}
-	if document.Id > 0 {
+		// If we didn't find it, 404
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		w.WriteHeader(http.StatusOK)
-		if err := getEncoder(w).Encode(document); err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		jsonErr := model.JsonErr{Code: http.StatusNotFound, Text: "Not Found"}
+		if err := getEncoder(w).Encode(jsonErr); err != nil {
 			panic(err)
 		}
-		return
 	}
 
-	// If we didn't find it, 404
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusNotFound)
-	jsonErr := model.JsonErr{Code: http.StatusNotFound, Text: "Not Found"}
-	if err := getEncoder(w).Encode(jsonErr); err != nil {
+	w.WriteHeader(http.StatusOK)
+	if err := getEncoder(w).Encode(document); err != nil {
 		panic(err)
 	}
-
 }
 
 //
@@ -87,6 +80,8 @@ func DocumentCreate(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 	}
+
+	document.Id = uuid.NewV4().String()
 
 	doc, err := database.StoreDocument(document)
 	if err != nil {

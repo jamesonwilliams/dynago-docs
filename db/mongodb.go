@@ -35,7 +35,7 @@ func (mdb *MongoDatabase) RetrieveDocuments() ([]model.Document, error) {
 }
 
 // RetrieveDocument get data from a document.
-func (mdb *MongoDatabase) RetrieveDocument(id int) (result model.Document, err error) {
+func (mdb *MongoDatabase) RetrieveDocument(id string) (result model.Document, err error) {
 	mdb.session = mdb.GetSession()
 	defer mdb.session.Close()
 	documents := mdb.session.DB(databaseName).C(documentsCollectionKey)
@@ -43,7 +43,7 @@ func (mdb *MongoDatabase) RetrieveDocument(id int) (result model.Document, err e
 	return result, err
 }
 
-func (mdb *MongoDatabase) DeleteDocument(id int) error {
+func (mdb *MongoDatabase) DeleteDocument(id string) error {
 	return nil
 }
 
