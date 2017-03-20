@@ -13,11 +13,11 @@ valuable for manual testing in the future.
         --table-name Documents \
         --key-schema \
             AttributeName=documentId,KeyType=HASH \
-            AttributeName=due,KeyType=RANGE \
+            AttributeName=published,KeyType=RANGE \
         --attribute-definitions \
             AttributeName=documentId,AttributeType=S \
-            AttributeName=due,AttributeType=S \
-        --provisioned-throughput
+            AttributeName=published,AttributeType=S \
+        --provisioned-throughput \
             ReadCapacityUnits=1,WriteCapacityUnits=1
 
 ### Get Gorilla Mux
