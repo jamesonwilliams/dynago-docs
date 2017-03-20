@@ -1,0 +1,32 @@
+{
+   "family" : "documents",
+   "containerDefinitions" : [
+      {
+         "environment" : [
+            {
+               "value" : "<SECRET_STUFF>",
+               "name" : "AWS_ACCESS_KEY_ID"
+            },
+            {
+               "value" : "<SUPER_SECRET_STUFF>",
+               "name" : "AWS_SECRET_ACCESS_KEY"
+            },
+            {
+               "value" : "us-west-2",
+               "name" : "AWS_REGION"
+            }
+         ],
+         "memory" : 384,
+         "name" : "documents",
+         "image" : "jamesonwilliams/dynago-docs",
+         "essential" : true,
+         "portMappings" : [
+            {
+               "hostPort" : 8080,
+               "containerPort" : 8080,
+               "protocol" : "tcp"
+            }
+         ]
+      }
+   ]
+}
