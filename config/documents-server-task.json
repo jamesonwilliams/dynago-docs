@@ -16,7 +16,7 @@
                "name" : "AWS_REGION"
             }
          ],
-         "memory" : 384,
+         "memory" : 100,
          "name" : "documents",
          "image" : "jamesonwilliams/dynago-docs",
          "essential" : true,
